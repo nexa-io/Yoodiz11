@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yoodiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary: #ff6b35;
+        --secondary: #4caf50;
+        --accent: #ff8c5a;
+        --dark: #1a1a1a;
+        --light: #fffaf7;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .btn-primary,
+        .product-card,
+        .gallery-item {
+          animation: none !important;
+          transition: none !important;
+          transform: none !important;
+        }
+      }
+
+      html,
+      body {
+        height: 100%;
+        scroll-behavior: smooth;
+      }
+
+      .yoodiz-app {
+        font-family: "DM Sans", sans-serif;
+        overflow-x: hidden;
+        background: #fff;
+      }
+
+      /* ── HEADER ── */
+      .yoodiz-header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(12px);
+        padding: 0.75rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        box-shadow: 0 2px 24px rgba(0, 0, 0, 0.06);
+        animation: slideDown 0.8s ease-out;
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(-100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+
+      #logo-img {
+        width: 80px;
+        height: 80px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.18));
+        transition: transform 0.3s;
+      }
+      #logo-img:hover {
+        transform: scale(1.07) rotate(-2deg);
+      }
+
+      .order-btn {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        transition: all 0.3s;
+        box-shadow: 0 4px 18px rgba(255, 107, 53, 0.35);
+      }
+      .order-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(255, 107, 53, 0.45);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        margin-top: 80px;
+        padding: 2rem;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+      .slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1.2s ease-in-out;
+      }
+      .slide.active {
+        opacity: 1;
+      }
+
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.45) 0%,
+          rgba(0, 0, 0, 0.25) 60%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+        z-index: 1;
+      }
+
+      .hero-content {
+        text-align: center;
+        z-index: 2;
+        position: relative;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 7vw, 6rem);
+        font-weight: 900;
+        color: #fff;
+        text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        margin-bottom: 1rem;
+        animation: fadeInUp 1s ease-out 0.2s backwards;
+        line-height: 1.15;
+      }
+
+      .hero p {
+        font-size: 1.4rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+        letter-spacing: 0.05em;
+        animation: fadeInUp 1s ease-out 0.4s backwards;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        animation: fadeInUp 1s ease-out 0.6s backwards;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: white;
+        padding: 1.1rem 2.8rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: all 0.3s;
+        box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+      }
+      .btn-primary:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+      }
+
+      .slide-dots {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.45);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .dot.active {
+        background: #fff;
+        width: 24px;
+        border-radius: 4px;
+      }
+
+      /* ── GALLERY ── */
+      .gallery {
+        padding: 5rem 5%;
+        background: #fff;
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 3rem;
+      }
+
+      .gallery-item {
+        position: relative;
+        height: 380px;
+        border-radius: 24px;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        background-size: cover;
+        background-position: center;
+      }
+      .gallery-item:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+      }
+
+      /* ── PRODUCTS ── */
+      .products {
+        padding: 5rem 5%;
+        background: linear-gradient(180deg, #fff 0%, #fff5f0 100%);
+      }
+
+      .section-title {
+        text-align: center;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        margin-bottom: 3.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 2.5rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+      .product-card:hover {
+        transform: translateY(-18px) rotate(1.5deg);
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+      }
+
+      .product-image {
+        height: 280px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .product-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .product-card:hover .product-image::after {
+        opacity: 0.18;
+      }
+
+      /* ── CONTACT ── */
+      .contact {
+        padding: 5rem 5%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+      }
+
+      .contact-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+
+      .contact h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 3rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
+      }
+
+      .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.1rem;
+        padding: 1rem 1.2rem;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 15px;
+        transition: all 0.3s;
+        text-decoration: none;
+        color: white;
+      }
+      .contact-item:hover {
+        background: rgba(255, 255, 255, 0.22);
+        transform: translateX(8px);
+      }
+
+      .social-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+      }
+
+      .social-card {
+        background: rgba(255, 255, 255, 0.13);
+        backdrop-filter: blur(10px);
+        padding: 1.8rem 1rem;
+        border-radius: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .social-card:hover {
+        background: rgba(255, 255, 255, 0.26);
+        transform: scale(1.07) translateY(-4px);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .social-icon {
+        font-size: 2.4rem;
+        margin-bottom: 0.7rem;
+        display: block;
+      }
+
+      .social-name {
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .social-handle {
+        font-size: 0.82rem;
+        opacity: 0.75;
+      }
+
+      /* ── FOOTER ── */
+      .yoodiz-footer {
+        background: var(--dark);
+        color: white;
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .footer-logo {
+        width: 70px;
+        height: 70px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto 1rem;
+        filter: brightness(1.1);
+      }
+
+      .footer-tagline {
+        opacity: 0.6;
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+      }
+
+      .footer-copy {
+        margin-top: 1.2rem;
+        opacity: 0.4;
+        font-size: 0.85rem;
+      }
+
+      /* ── SCROLL REVEAL ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.6rem;
+        }
+        .hero p {
+          font-size: 1.1rem;
+        }
+        .contact-content {
+          grid-template-columns: 1fr;
+        }
+        .social-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        .yoodiz-header {
+          padding: 0.6rem 4%;
+        }
+        .gallery-grid {
+          grid-template-columns: 1fr;
+        }
+        .product-grid {
+          grid-template-columns: 1fr;
+        }
+        #logo-img {
+          width: 64px;
+          height: 64px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="yoodiz-app">
+      <!-- ── HEADER ── -->
+      <header class="yoodiz-header">
+        <div class="logo-container">
+          <div id="logo-img" class="logo"></div>
+        </div>
+        <a href="https://wa.me/2349120408195" class="order-btn">Order Now</a>
+      </header>
+
+      <!-- ── HERO (slideshow background) ── -->
+      <section class="hero" id="hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1>Mouthwatering Goodness</h1>
+          <p>Crafted Fresh Daily</p>
+          <div class="cta-buttons">
+            <a href="https://wa.me/2349120408195" class="btn-primary">Order on WhatsApp</a>
+          </div>
+        </div>
+        <div class="slide-dots" id="slideDots"></div>
+      </section>
+
+      <!-- ── GALLERY ── -->
+      <section class="gallery reveal">
+        <h2 class="section-title">Our Creations</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item gallery-item-1" data-img="parfaitOpen1"></div>
+          <div class="gallery-item gallery-item-2" data-img="parfaitOpen2"></div>
+          <div class="gallery-item gallery-item-3" data-img="greekYogurt"></div>
+          <div class="gallery-item gallery-item-4" data-img="parfaitClosed1"></div>
+          <div class="gallery-item gallery-item-5" data-img="parfaitClosed2"></div>
+          <div class="gallery-item gallery-item-6" data-img="parfaitSizesStacked"></div>
+        </div>
+      </section>
+
+      <!-- ── PRODUCTS ── -->
+      <section class="products reveal" id="products">
+        <h2 class="section-title">What We Offer</h2>
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="product-image" data-img="parfaitOpen1"></div>
+          </div>
+          <div class="product-card">
+            <div class="product-image" data-img="greekYogurt"></div>
+          </div>
+          <div class="product-card">
+            <div class="product-image" data-img="parfaitClosed1"></div>
+          </div>
+          <div class="product-card">
+            <div class="product-image" data-img="parfaitClosed2"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CONTACT ── -->
+      <section class="contact reveal" id="contact">
+        <div class="contact-content">
+          <div>
+            <h2>Get in Touch</h2>
+            <div class="contact-info">
+              <a href="https://wa.me/2349120408195" class="contact-item">
+                <span>📱</span>
+                <span>09120408195</span>
+              </a>
+              <a
+                href="https://maps.google.com/?q=Luton+Park+Hotel,+2+Unity+Park+Road,+off+Udo+Udoma+Avenue,+Uyo"
+                class="contact-item"
+              >
+                <span>📍</span>
+                <span>Luton Park Hotel, 2 Unity Park Road, Uyo</span>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 style="margin-bottom: 2rem; font-size: 2rem; font-family: 'Playfair Display', serif">
+              Follow Us
+            </h3>
+            <div class="social-grid">
+              <a href="https://instagram.com/yoodiz_" class="social-card">
+                <i class="fa-brands fa-instagram social-icon"></i>
+                <div class="social-name">Instagram</div>
+                <div class="social-handle">@yoodiz_</div>
+              </a>
+              <a href="https://facebook.com/yoodiz" class="social-card">
+                <i class="fa-brands fa-facebook social-icon"></i>
+                <div class="social-name">Facebook</div>
+                <div class="social-handle">yoodiz</div>
+              </a>
+              <a href="https://tiktok.com/@yoodizfoods" class="social-card">
+                <i class="fa-brands fa-tiktok social-icon"></i>
+                <div class="social-name">TikTok</div>
+                <div class="social-handle">@yoodizfoods</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── FOOTER ── -->
+      <footer class="yoodiz-footer">
+        <div class="footer-logo" id="footer-logo"></div>
+        <p class="footer-tagline">Fresh parfaits, Greek yogurt, granola &amp; zobo</p>
+        <p class="footer-copy">© 2026 Yoodiz. Made with love in Uyo</p>
+      </footer>
+    </div>
+
+    <script>
+      // ── IMAGE URLS ──
+      const IMAGES = {
+        logo: "https://www.image2url.com/r2/default/images/1779718514800-8d884ce5-9e2b-40e8-b2e7-baf838640af7.jpg",
+        parfaitClosed1:
+          "https://www.image2url.com/r2/default/images/1779718600178-10b15d30-fdfe-4945-855a-27c503a0d144.jpg",
+        parfaitClosed2:
+          "https://www.image2url.com/r2/default/images/1779718664552-7e2be309-0eed-4c18-9de3-c1bff2027698.jpg",
+        parfaitOpen1:
+          "https://www.image2url.com/r2/default/images/1779718751008-eb97c3cf-a282-4d2f-b951-ecbb8adbe148.jpg",
+        parfaitOpen2:
+          "https://www.image2url.com/r2/default/images/1779718847536-6cbc516a-521c-41a2-9a4d-f6aaa3b47906.jpg",
+        parfaitSizesStacked:
+          "https://www.image2url.com/r2/default/images/1779718979492-c5423da4-cf1b-4620-a52a-06df03260cf4.jpg",
+        greekYogurt:
+          "https://www.image2url.com/r2/default/images/1779719090359-d8d12332-5a80-4054-ab97-7e656c3712d1.jpg",
+      };
+
+      // ── APPLY LOGO ──
+      const logoEl = document.getElementById("logo-img");
+      logoEl.style.backgroundImage = `url(${IMAGES.logo})`;
+
+      const footerLogoEl = document.getElementById("footer-logo");
+      footerLogoEl.style.backgroundImage = `url(${IMAGES.logo})`;
+
+      // ── APPLY GALLERY / PRODUCT IMAGES ──
+      document.querySelectorAll("[data-img]").forEach((el) => {
+        const key = el.getAttribute("data-img");
+        if (IMAGES[key]) el.style.backgroundImage = `url(${IMAGES[key]})`;
+      });
+
+      // ── HERO SLIDESHOW ──
+      const slideKeys = [
+        "parfaitOpen1",
+        "parfaitOpen2",
+        "greekYogurt",
+        "parfaitClosed1",
+        "parfaitClosed2",
+        "parfaitSizesStacked",
+      ];
+      const heroBg = document.getElementById("heroBg");
+      const dotsEl = document.getElementById("slideDots");
+      let currentSlide = 0;
+
+      slideKeys.forEach((key, i) => {
+        const slide = document.createElement("div");
+        slide.className = "slide" + (i === 0 ? " active" : "");
+        slide.style.backgroundImage = `url(${IMAGES[key]})`;
+        heroBg.appendChild(slide);
+
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === 0 ? " active" : "");
+        dot.addEventListener("click", () => goToSlide(i));
+        dotsEl.appendChild(dot);
+      });
+
+      function goToSlide(n) {
+        const slides = heroBg.querySelectorAll(".slide");
+        const dots = dotsEl.querySelectorAll(".dot");
+        slides[currentSlide].classList.remove("active");
+        dots[currentSlide].classList.remove("active");
+        currentSlide = n;
+        slides[currentSlide].classList.add("active");
+        dots[currentSlide].classList.add("active");
+      }
+
+      setInterval(() => goToSlide((currentSlide + 1) % slideKeys.length), 4000);
+
+      // ── SCROLL REVEAL ──
+      const revealEls = document.querySelectorAll(".reveal");
+      function checkReveal() {
+        revealEls.forEach((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight - 120) {
+            el.classList.add("active");
+          }
+        });
+      }
+      window.addEventListener("scroll", checkReveal);
+      checkReveal();
+    </script>
+  </body>
+</html>
